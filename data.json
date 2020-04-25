@@ -1,1 +1,1 @@
-{"id": 2, "data": [{"id": 0, "name": "Dummy Data", "email": "test@dummy.com", "year": 2006}]}
+{"id": 4, "data": [{"id": 0, "name": "Dummy Data", "email": "test@dummy.com", "year": 2006}, {"id": 1, "name": "Dummy Data", "email": "test@dummy.com", "year": 2006}, {"name": "William Canez", "email": "williamc@uia.no", "year": 2006, "id": 2}]}

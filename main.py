@@ -6,45 +6,53 @@ from os import system
 inp = 0
 
 while (inp != 6):
-    system("cls")
-    print(
-        "--------------------\n1)Read all students \n2)Get student by id\n3)Add student\n4)Edit student\n5)Remove student\n6)Exit\n----------------")
+    print("--------------------\n"
+          "1)Read all students \n"
+          "2)Get student by id\n"
+          "3)Add student\n"
+          "4)Edit student\n"
+          "5)Remove student\n"
+          "6)Exit\n"
+          "----------------")
     inp = int(input('Input:'))
-    if (inp == 1):
+    if inp == 1:
         url_server = "http://127.0.0.1:5000/students"
         r = requests.get(url=url_server)
         data = r.json()
+        print("\n")
         for std in data:
             print("Student: Name=", std["name"], "Email=", std["email"], "year=", std["year"], "ID=", std["id"])
-        input("Any key to continue")
+        input("\nAny key to continue")
     elif inp == 2:
-        id = input("give ID:")
+        id = input("\ngive ID:")
         url_server = "http://127.0.0.1:5000/students/" + id
         r = requests.get(url=url_server)
         try:
             std = r.json()
-            print("---------------------------\n", "Student: Name=", std["name"], "Email=", std["email"], "year=",std["year"], "ID=", std["id"])
+            print("---------------------------\n", "Student: Name=", std["name"], "Email=", std["email"], "year=",
+                  std["year"], "ID=", std["id"])
             input("\n\nEnter to continue")
         except:
-            print("No Student")
+            print("No Student Found :(")
             input()
     elif inp == 3:
         name = input("*)Give Name:")
         email = input("*)Give email:")
         year = int(input("*)Give year:"))
-        url_server = "http://127.0.0.1:5000/students/post"
-        myda = {
+        url_server = "http://127.0.0.1:5000/students/"
+        my_data = {
             "name": name,
             "email": email,
             "year": year
         }
         headers = {'content-type': 'application/json'}
 
-        r = requests.get(url=url_server, json=myda, headers=headers)
-        print("\n==>Student Added: Name=", name, "Email=", email, "year=",
-              year, "ID=", id)
-
-        input("\n\nPress Enter to continue")
+        r = requests.post(url=url_server, json=my_data, headers=headers)
+        if r.status_code == 201:
+            print("\nStudent Created")
+        else:
+            print("Some Error Occurred")
+        input("\nPress Enter to continue")
 
     elif inp == 4:
         id = input("*)Give ID:")
@@ -55,7 +63,7 @@ while (inp != 6):
         except:
             year = -1
 
-        url_server = "http://127.0.0.1:5000/students/update/" + id
+        url_server = "http://127.0.0.1:5000/students/" + id
         myda = {
             "name": name,
             "email": email,
@@ -63,14 +71,24 @@ while (inp != 6):
         }
         headers = {'content-type': 'application/json'}
 
-        r = requests.get(url=url_server, json=myda, headers=headers)
-        print(r.json())
+        r = requests.put(url=url_server, json=myda, headers=headers)
+        if r.status_code == 200:
+            print("\nUpdated Successfully")
+        elif r.status_code == 404:
+            print("\nNo student Found with this ID:", id)
+        else:
+            print("\nSome Error Occurred")
     elif inp == 5:
         id = input("Give ID:")
 
-        url_server = "http://127.0.0.1:5000/students/delete/" + id
-        r = requests.get(url=url_server)
-        print(r.json())
+        url_server = "http://127.0.0.1:5000/students/" + id
+        r = requests.delete(url=url_server)
+        if r.status_code == 200:
+            print("\nDeleted Successfully")
+        elif r.status_code == 404:
+            print("\nNo Student Found with this ID")
+        else:
+            print("Internal Error Occurred")
     elif inp == 6:
         system("cls")
         print("Addios")
