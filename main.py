@@ -21,10 +21,13 @@ while (inp != 6):
         id = input("give ID:")
         url_server = "http://127.0.0.1:5000/students/" + id
         r = requests.get(url=url_server)
-        std = r.json()
-        print("---------------------------\n", "Student: Name=", std["name"], "Email=", std["email"], "year=",
-              std["year"], "ID=", std["id"])
-        input("\n\nEnter to continue")
+        try:
+            std = r.json()
+            print("---------------------------\n", "Student: Name=", std["name"], "Email=", std["email"], "year=",std["year"], "ID=", std["id"])
+            input("\n\nEnter to continue")
+        except:
+            print("No Student")
+            input()
     elif inp == 3:
         name = input("*)Give Name:")
         email = input("*)Give email:")
@@ -48,9 +51,9 @@ while (inp != 6):
         name = input("*)Give Name(Enter to remain as before):")
         email = input("*)Give email(Enter to remain as before):")
         try:
-            year = int(input("*)Give year(Enter to remain as before):"))
+            year = int(input("*)Give year(Enter below zero to not change year):"))
         except:
-            year = 0
+            year = -1
 
         url_server = "http://127.0.0.1:5000/students/update/" + id
         myda = {

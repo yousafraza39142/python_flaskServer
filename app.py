@@ -105,7 +105,7 @@ def UpdateStd(stu_id):
                 data["data"][index]["name"] = newData["name"]
             if newData["email"] != "":
                 data["data"][index]["email"] = newData["email"]
-            if newData["year"] is not None:
+            if newData["year"] < 0:
                 data["data"][index]["year"] = newData["year"]
         index += 1
 
